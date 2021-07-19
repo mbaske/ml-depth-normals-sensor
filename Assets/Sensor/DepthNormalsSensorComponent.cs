@@ -69,11 +69,13 @@ namespace MBaske.Sensors
         [SerializeField]
         private int m_Height = 84;
 
+        [SerializeField]
+        private Material m_Material;
+
         [Space]
         [SerializeField]
         private RawImage m_UI;
-
-        private Material m_Material;
+       
         private RenderTextureSensor m_Sensor;
 
         /// <inheritdoc/>
@@ -90,12 +92,16 @@ namespace MBaske.Sensors
 
         private RenderTexture InitTexture()
         {
-            m_Material = new Material(Shader.Find("Custom/DepthNormals"));
+            if (m_Material == null)
+            {
+                m_Material = new Material(Shader.Find("Custom/DepthNormals"));
+            }
+            
             Camera cam = GetComponent<Camera>();
             cam.depthTextureMode |= DepthTextureMode.DepthNormals;
             cam.targetTexture = new RenderTexture(Width, Height, 16, RenderTextureFormat.ARGB32); 
 
-            if (m_UI is object)
+            if (m_UI != null)
             {
                 m_UI.texture = cam.targetTexture;
             }
@@ -104,7 +110,7 @@ namespace MBaske.Sensors
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            if (m_Material is object)
+            if (m_Material != null)
             {
                 Graphics.Blit(source, destination, m_Material, 0);
             }
@@ -126,7 +132,7 @@ namespace MBaske.Sensors
         /// </summary>
         public void Dispose()
         {
-            if (m_Sensor is object)
+            if (m_Sensor != null)
             {
                 m_Sensor.Dispose();
                 m_Sensor = null;
