@@ -17,8 +17,6 @@ Shader "Custom/DepthNormals"
 			#include "UnityCG.cginc"
 
 			sampler2D _CameraDepthNormalsTexture;
-			float _StartingTime;
-			float _showNormalColors = 0;
 
 			struct v2f 
 			{
